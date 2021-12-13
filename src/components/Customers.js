@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { AgGridReact } from 'ag-grid-react';
-
+import { render } from '@testing-library/react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import Snackbar from '@mui/material/Snackbar';
@@ -9,22 +9,37 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Editcustomer from './EditCustomer';
 import IconButton from '@mui/material/IconButton';
 import AddTraining from './AddTraining';
+import {CSVDownload} from 'react-csv';
+import Button from '@mui/material/Button'
+
 
 
 function Customers() {
     const [customers, setCustomers] = useState([]);
     const [trainings, setTrainings] = useState([]);
+    const csvFile = [];
 
+    
     useEffect(() => {
         fetchCustomers();
     }, []);
-
+    
     const fetchCustomers = () => {
         fetch('https://customerrest.herokuapp.com/api/customers')
         .then(response => response.json())
         .then(data => setCustomers(data.content))
         .catch(err => console.error(err))
     }
+    
+    function exportCsv() {
+        for(let i = 0; i < customers.length; i++){
+            csvFile.push({ firstname: customers[i].firstname, lastname: customers[i].lastname, streetaddress: customers[i].streetaddress, postcode: customers[i].postcode, city: customers[i].city, email: customers[i].email, phone: customers[i].phone, links: customers[i].links[0].href });
+        }
+        render(
+            <CSVDownload data={csvFile} target="_blank" />
+        );
+    }
+
     const fetchTrainings = () => {
         fetch('https://customerrest.herokuapp.com/gettrainings')
         .then(response => response.json())
@@ -106,6 +121,7 @@ function Customers() {
 
     return(
         <div>
+            <Button variant="outlined" onClick={exportCsv} style={{width: '90px', marginLeft: '90%', marginTop: '10px'}}>CSV</Button>
             <AddCustomer addCustomer= {addCustomer} />
             <div className="ag-theme-material" style={{marginTop: 20, height: 600, width: '90%', margin: 'auto'}}>
                 <AgGridReact 

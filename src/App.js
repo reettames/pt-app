@@ -3,6 +3,7 @@ import React from 'react';
 import './App.css';
 import Customers from './components/Customers';
 import Trainings from './components/Trainings';
+import Calendar from './components/Calendar';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -12,6 +13,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Link from '@mui/material/Link';
 import burger from './burger.png';
+import Statistics from './components/Statistics'
 
 export default function App() {
   const [value, setValue] = React.useState('customers');
@@ -41,6 +43,9 @@ export default function App() {
                 <ListItem>
                   <Button onClick={() => setValue("calendar")} color="secondary">Calendar</Button>
                 </ListItem>
+                <ListItem>
+                  <Button onClick={() => setValue("statistics")} color="secondary">Statistics</Button>
+                </ListItem>
               </List>
             </Box>
           </Drawer>
@@ -51,6 +56,8 @@ export default function App() {
       </AppBar>
       {value === 'customers' && <Customers />}
       {value === 'trainings' && <Trainings />}
+      {value === 'calendar' && <Calendar />}
+      {value === 'statistics' && <Statistics />}
 
     </div>
   );

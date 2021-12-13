@@ -53,7 +53,7 @@ function AddTraining(props){
                     onChange={inputChanged}
                     label="Date"
                     fullWidth
-                    type='date'
+                    type='datetime-local'
                     variant="standard"
                 />
                 <TextField
